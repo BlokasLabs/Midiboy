@@ -227,7 +227,7 @@ uint8_t sh1106_get_y_8()
 	return g_y_8;
 }
 
-void sh1106_draw_space(uint8_t pixels_1x8, uint16_t n, bool inverse)
+void sh1106_draw_bits(uint8_t pixels_1x8, uint16_t n, bool inverse)
 {
 	uint8_t byte = !inverse ? pixels_1x8 : ~pixels_1x8;
 	while (n != 0)

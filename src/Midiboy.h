@@ -5,6 +5,7 @@
 #include "MidiboyDIN5MIDI.h"
 #include "MidiboyUSBMIDI.h"
 #include "MidiboyInput.h"
+#include "MidiboyFonts.h"
 
 // Midiboy class connects all of Midiboy functionality to a single class.
 // Check out the API documentation for each parent class to see what's available.
