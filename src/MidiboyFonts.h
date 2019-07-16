@@ -29,10 +29,10 @@
 	class FontClass \
 	{ \
 	public: \
-		static const uint8_t WIDTH = w;            /* Width of a character. */ \
-		static const uint8_t HEIGHT = h;           /* Height of a character. */ \
-		static const uint16_t SIZE = bytes;        /* Size in bytes. */ \
-		static const PROGMEM uint8_t DATA_P[SIZE]; /* P stands for PROGMEM, used a reminder that the data needs to be read using pgm_read_* APIs from avr/pgmspace.h. */ \
+		static constexpr uint8_t WIDTH = w;            /* Width of a character. */ \
+		static constexpr uint8_t HEIGHT = h;           /* Height of a character. */ \
+		static constexpr uint16_t SIZE = bytes;        /* Size in bytes. */ \
+		static const     PROGMEM uint8_t DATA_P[SIZE]; /* P stands for PROGMEM, used a reminder that the data needs to be read using pgm_read_* APIs from avr/pgmspace.h. */ \
 	}
 
 // Defines the Font data. Should be used in C++ (.cpp) files.
@@ -40,7 +40,7 @@
 	const PROGMEM uint8_t FontClass::DATA_P[FontClass::SIZE] =
 
 // Built-in fonts.
-MIDIBOY_DECLARE_FONT(FONT_MICRO, 3, 5, 288); // 3x5 Font data based on X11 micro which is available as Public Domain font: https://github.com/olikraus/u8g2/wiki/fntgrpx11#micro, https://cgit.freedesktop.org/xorg/font/micro-misc/tree/COPYING
-MIDIBOY_DECLARE_FONT(FONT_5X7,   5, 7, 475); // 5x7 Font data based on X11 5x7 font which is available as Public Domain font: https://gitlab.freedesktop.org/xorg/font/misc-misc, https://gitlab.freedesktop.org/xorg/font/misc-misc/blob/master/COPYING
+MIDIBOY_DECLARE_FONT(MIDIBOY_FONT_MICRO, 3, 5, 285); // 3x5 Font data based on X11 micro which is available as Public Domain font: https://github.com/olikraus/u8g2/wiki/fntgrpx11#micro, https://cgit.freedesktop.org/xorg/font/micro-misc/tree/COPYING
+MIDIBOY_DECLARE_FONT(MIDIBOY_FONT_5X7,   5, 7, 475); // 5x7 Font data based on X11 5x7 font which is available as Public Domain font: https://gitlab.freedesktop.org/xorg/font/misc-misc, https://gitlab.freedesktop.org/xorg/font/misc-misc/blob/master/COPYING
 
 #endif // MIDIBOY_FONTS_H

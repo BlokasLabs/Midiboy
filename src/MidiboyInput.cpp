@@ -34,7 +34,7 @@ struct packed_event_t
 static TFifo<packed_event_t, uint8_t, MAX_EVENTS> g_eventQueue;
 static uint8_t g_state;
 static uint8_t g_repeating;
-static unsigned long g_lastUpdated[BUTTON_COUNT];
+static unsigned long g_lastUpdated[MidiboyInput::BUTTON_COUNT];
 static uint16_t g_inputRepeatMs = 300;
 
 static inline uint8_t readRawInput()
@@ -52,17 +52,17 @@ static void updateState()
 	if (diff)
 	{
 		unsigned long ms = millis();
-		for (uint8_t i=0; i<BUTTON_COUNT; ++i)
+		for (uint8_t i=0; i<MidiboyInput::BUTTON_COUNT; ++i)
 		{
 			uint8_t bit = 1 << i;
 			if ((diff & bit) && (ms - g_lastUpdated[i]) >= INPUT_DEBOUNCE_MS)
 			{
 				packed_event_t e;
 				e.m_button = i;
-				e.m_type = (state & bit) ? EVENT_UP : EVENT_DOWN;
+				e.m_type = (state & bit) ? MidiboyInput::EVENT_UP : MidiboyInput::EVENT_DOWN;
 				g_eventQueue.push(e);
 				g_lastUpdated[i] = ms;
-				if (e.m_type == EVENT_UP)
+				if (e.m_type == MidiboyInput::EVENT_UP)
 				{
 					g_state |= bit;
 					g_repeating &= ~bit;
@@ -88,7 +88,7 @@ void MidiboyInput::begin()
 	pinMode(PIN_BTN_LEFT,  INPUT_PULLUP);
 	pinMode(PIN_BTN_RIGHT, INPUT_PULLUP);
 
-	for (int i=0; i<BUTTON_COUNT; ++i)
+	for (int i=0; i<MidiboyInput::BUTTON_COUNT; ++i)
 	{
 		g_lastUpdated[i] = millis();
 	}
@@ -102,7 +102,7 @@ void MidiboyInput::think()
 		return;
 
 	unsigned long ms = millis();
-	for (int i=0; i<BUTTON_COUNT; ++i)
+	for (int i=0; i<MidiboyInput::BUTTON_COUNT; ++i)
 	{
 		uint8_t bit = 1 << i;
 		if ((g_state & bit) == 0)
@@ -121,7 +121,7 @@ void MidiboyInput::think()
 				{
 					packed_event_t e;
 					e.m_button = i;
-					e.m_type = EVENT_DOWN;
+					e.m_type = MidiboyInput::EVENT_DOWN;
 					g_eventQueue.push(e);
 					g_lastUpdated[i] = ms;
 				}
@@ -140,13 +140,13 @@ uint16_t MidiboyInput::getButtonRepeatMs() const
 	return g_inputRepeatMs;
 }
 
-bool MidiboyInput::readInputEvent(InputEvent & result)
+bool MidiboyInput::readInputEvent(Event & result)
 {
 	packed_event_t e;
 	if (g_eventQueue.pop(e))
 	{
-		result.m_button = (Button)e.m_button;
-		result.m_type = (InputEventType)e.m_type;
+		result.m_button = (MidiboyInput::Button)e.m_button;
+		result.m_type = (MidiboyInput::EventType)e.m_type;
 		return true;
 	}
 	else return false;

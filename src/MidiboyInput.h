@@ -23,33 +23,33 @@
 #include <stdint.h>
 #include <Arduino.h>
 
-enum Button
-{
-	BUTTON_A     = digitalPinToBit(PIN_BTN_A),
-	BUTTON_B     = digitalPinToBit(PIN_BTN_B),
-	BUTTON_UP    = digitalPinToBit(PIN_BTN_UP),
-	BUTTON_DOWN  = digitalPinToBit(PIN_BTN_DOWN),
-	BUTTON_LEFT  = digitalPinToBit(PIN_BTN_LEFT),
-	BUTTON_RIGHT = digitalPinToBit(PIN_BTN_RIGHT),
-
-	BUTTON_COUNT = 6
-};
-
-enum InputEventType
-{
-	EVENT_DOWN = 0,
-	EVENT_UP   = 1,
-};
-
-struct InputEvent
-{
-	Button         m_button;
-	InputEventType m_type;
-};
-
 class MidiboyInput
 {
 public:
+	enum Button
+	{
+		BUTTON_A     = digitalPinToBit(PIN_BTN_A),
+		BUTTON_B     = digitalPinToBit(PIN_BTN_B),
+		BUTTON_UP    = digitalPinToBit(PIN_BTN_UP),
+		BUTTON_DOWN  = digitalPinToBit(PIN_BTN_DOWN),
+		BUTTON_LEFT  = digitalPinToBit(PIN_BTN_LEFT),
+		BUTTON_RIGHT = digitalPinToBit(PIN_BTN_RIGHT),
+
+		BUTTON_COUNT = 6
+	};
+
+	enum EventType
+	{
+		EVENT_DOWN   = 0,
+		EVENT_UP     = 1,
+	};
+
+	struct Event
+	{
+		Button       m_button;
+		EventType    m_type;
+	};
+
 	// Initialize the Midiboy Input.
 	void begin();
 
@@ -65,19 +65,19 @@ public:
 	//
 	// Recommended pattern to iterate over the events:
 	//
-	// InputEvent event;
+	// MidiboyInput::Event event;
 	// while (readInputEvent(event))
 	// {
 	//     switch (event.m_button)
 	//     {
-	//     case BUTTON_A:
-	//         if (event.m_type == EVENT_DOWN)
+	//     case MidiboyInput::BUTTON_A:
+	//         if (event.m_type == MidiboyInput::EVENT_DOWN)
 	//             run();
 	//         break;
 	//     ...
 	//     }
 	// }
-	bool readInputEvent(InputEvent &result);
+	bool readInputEvent(Event &result);
 };
 
 #endif // MIDIBOY_INPUT_H
